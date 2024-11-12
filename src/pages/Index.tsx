@@ -3,7 +3,6 @@ import ImageUpload from '@/components/ImageUpload';
 import CustomizationPanel from '@/components/CustomizationPanel';
 import PromptDisplay from '@/components/PromptDisplay';
 import { toast } from 'sonner';
-import { generatePromptFromImage } from '@/utils/gemini';
 
 const Index = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -24,25 +23,19 @@ const Index = () => {
     }
 
     setIsLoading(true);
-    try {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64Image = e.target?.result as string;
-        const generatedPrompt = await generatePromptFromImage(base64Image);
-        setPrompt(generatedPrompt);
-      };
-      reader.readAsDataURL(image);
-    } catch (error) {
-      toast.error('Failed to generate prompt');
-      console.error(error);
-    } finally {
+    // Simulate API call
+    setTimeout(() => {
+      setPrompt(
+        "A stunning photograph capturing a moment of serenity, featuring soft natural lighting that creates a warm, inviting atmosphere. The composition draws the viewer's eye through the frame, while subtle details in the background add depth and context to the scene."
+      );
       setIsLoading(false);
-    }
+    }, 2000);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
+        {/* Header */}
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Image to Text Prompt Generator
@@ -52,6 +45,7 @@ const Index = () => {
           </p>
         </div>
 
+        {/* Main Content */}
         <div className="space-y-6">
           <ImageUpload onImageUpload={handleImageUpload} />
           

@@ -13,8 +13,8 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error('File size must be less than 10MB');
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('File size must be less than 5MB');
         return;
       }
       
@@ -30,7 +30,7 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.webp', '.svg', '.tiff', '.heif', '.avif', '.bmp']
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif']
     },
     maxFiles: 1
   });
@@ -73,7 +73,7 @@ const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
                 <span className="text-primary-500">browse</span>
               </p>
               <p className="mt-1 text-xs text-gray-500">
-                JPEG, PNG, GIF, WebP, SVG, TIFF, HEIF, AVIF, BMP up to 10MB
+                PNG, JPG, GIF up to 5MB
               </p>
             </div>
           </div>
