@@ -31,7 +31,7 @@ export const generatePromptFromImage = async (
       {
         inlineData: {
           mimeType: imageFile.type,
-          data: base64
+          data: base64Data
         }
       }
     ]);
