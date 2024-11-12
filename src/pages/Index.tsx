@@ -3,6 +3,7 @@ import ImageUpload from '@/components/ImageUpload';
 import CustomizationPanel from '@/components/CustomizationPanel';
 import PromptDisplay from '@/components/PromptDisplay';
 import { toast } from 'sonner';
+import { generatePromptFromImage } from '@/utils/gemini';
 
 const Index = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -23,13 +24,15 @@ const Index = () => {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setPrompt(
-        "A stunning photograph capturing a moment of serenity, featuring soft natural lighting that creates a warm, inviting atmosphere. The composition draws the viewer's eye through the frame, while subtle details in the background add depth and context to the scene."
-      );
+    try {
+      const generatedPrompt = await generatePromptFromImage(image, tone, style);
+      setPrompt(generatedPrompt);
+    } catch (error) {
+      toast.error('Failed to generate prompt. Please try again.');
+      console.error('Error:', error);
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   return (
