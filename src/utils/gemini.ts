@@ -9,9 +9,18 @@ export const generatePromptFromImage = async (
   style: string
 ): Promise<string> => {
   try {
-    // Convert File to Uint8Array
-    const imageData = await imageFile.arrayBuffer();
-    const imageBytes = new Uint8Array(imageData);
+    // Convert File to base64 using FileReader
+    const base64Data = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Extract base64 data from the data URL
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(imageFile);
+    });
 
     // Create prompt based on tone and style
     const promptPrefix = `Analyze this image and generate a detailed description. Use a ${tone} tone and ${style} style.`;
@@ -22,7 +31,7 @@ export const generatePromptFromImage = async (
       {
         inlineData: {
           mimeType: imageFile.type,
-          data: Buffer.from(imageBytes).toString('base64')
+          data: base64
         }
       }
     ]);
